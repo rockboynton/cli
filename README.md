@@ -71,3 +71,35 @@ If you want to only build one of the cross targets, supply the `CROSS_TARGETS` e
 
 
 If you get an error about md5sum on mac when running `make release`, you probably need to `brew install coreutils`
+
+### Offline KCL checks
+
+```bash
+zoo kcl check main.kcl
+zoo kcl check . --deny-warnings
+zoo kcl check main.kcl --json
+cat main.kcl | zoo kcl check - --json
+```
+
+The default entry point is `main.kcl`; directories use their `main.kcl`. Checks
+use `kcl-lib` mock execution without authentication or an engine connection. The
+checker also skips the CLI update notifier, including when invoked through an
+alias. A successful check does not establish authoritative CAD geometry.
+
+File inputs use the nearest `project.toml` in the entry point's directory or its
+parents. Imports resolve from the entry point's directory. Stdin imports resolve
+from the working directory; stdin uses default executor settings and the source's
+KCL annotations. Errors fail the command; warnings fail only with
+`--deny-warnings`. Text diagnostics go to stderr.
+
+`--json` writes one report to stdout even when checking fails, with
+`schema_version: 1`, `ok`, and `diagnostics`. Each diagnostic has a severity,
+optional code, message, locations, and optional suggested edit. Locations include
+file names, zero-based UTF-8 byte offsets (end exclusive), and one-based line and
+Unicode character columns. Unavailable locations are null; stdin is named `-`.
+`ok` includes the warning policy and agrees with the exit status. This format
+contains diagnostics, not internal execution or geometry data.
+
+The Cargo patches pin our `rockboynton/modeling-app` fork containing the shared
+`kcl-lib::check` API. No sibling checkout is required. Replace the Git patches
+with released crate dependencies once the shared API is available upstream.

@@ -16,6 +16,9 @@ use crate::{
 };
 
 mod camera_angles;
+mod check;
+
+use check::CmdKclCheck;
 
 /// Send a heartbeat every N seconds.
 pub const HEARTBEATS: u64 = 3;
@@ -33,6 +36,12 @@ pub(crate) fn with_heartbeats(mut settings: kcl_lib::ExecutorSettings) -> kcl_li
 pub struct CmdKcl {
     #[clap(subcommand)]
     subcmd: SubCommand,
+}
+
+impl CmdKcl {
+    pub(crate) fn is_offline_check(&self) -> bool {
+        matches!(self.subcmd, SubCommand::Check(_))
+    }
 }
 
 #[derive(clap::Args, Debug, Clone, Copy, Default)]
@@ -54,6 +63,7 @@ impl KclRunOptions {
 
 #[derive(Parser, Debug, Clone)]
 enum SubCommand {
+    Check(CmdKclCheck),
     Export(CmdKclExport),
     #[clap(alias = "fmt")]
     Format(CmdKclFormat),
@@ -73,6 +83,7 @@ enum SubCommand {
 impl crate::cmd::Command for CmdKcl {
     async fn run(&self, ctx: &mut crate::context::Context) -> Result<()> {
         match &self.subcmd {
+            SubCommand::Check(cmd) => cmd.run(ctx).await,
             SubCommand::Export(cmd) => cmd.run(ctx).await,
             SubCommand::Format(cmd) => cmd.run(ctx).await,
             SubCommand::Snapshot(cmd) => cmd.run(ctx).await,

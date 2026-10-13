@@ -176,12 +176,6 @@ async fn main() -> Result<(), ()> {
         eprintln!("Failed to set miette hook: {err}");
     })?;
 
-    let build_version = clap::crate_version!();
-    // Check for updates to the cli.
-    // We don't await here since we don't want to block the main thread.
-    // We'll check again before we exit.
-    let update = crate::update::check_for_update(build_version, false);
-
     // Let's get our configuration.
     let mut c = crate::config_file::parse_default_config().unwrap();
     let mut config = crate::config_from_env::EnvConfig::inherit_env(&mut c);
@@ -190,9 +184,6 @@ async fn main() -> Result<(), ()> {
     // Let's grab all our args.
     let args: Vec<String> = std::env::args().collect();
     let result = do_main(args, &mut ctx).await;
-
-    // If we have an update, let's print it.
-    handle_update(&mut ctx, update.await.unwrap_or_default(), build_version).unwrap();
 
     if let Err(err) = result {
         eprintln!("{err}");
@@ -278,7 +269,10 @@ async fn do_main(mut args: Vec<String>, ctx: &mut crate::context::Context<'_>) -
         slog_stdlog::init_with_level(log::Level::Debug).unwrap();
     }
 
-    match opts.subcmd {
+    // Decide after alias expansion and argument parsing so aliases of the
+    // offline checker also avoid automatic network requests.
+    let offline_check = matches!(&opts.subcmd, SubCommand::Kcl(cmd) if cmd.is_offline_check());
+    let result = match opts.subcmd {
         SubCommand::Alias(cmd) => run_cmd(&cmd, ctx).await,
         SubCommand::Api(cmd) => run_cmd(&cmd, ctx).await,
         SubCommand::ApiCall(cmd) => run_cmd(&cmd, ctx).await,
@@ -298,7 +292,15 @@ async fn do_main(mut args: Vec<String>, ctx: &mut crate::context::Context<'_>) -
         SubCommand::Update(cmd) => run_cmd(&cmd, ctx).await,
         SubCommand::User(cmd) => run_cmd(&cmd, ctx).await,
         SubCommand::Version(cmd) => run_cmd(&cmd, ctx).await,
+    };
+    if !offline_check {
+        let build_version = clap::crate_version!();
+        let update = crate::update::check_for_update(build_version, false)
+            .await
+            .unwrap_or_default();
+        handle_update(ctx, update, build_version)?;
     }
+    result
 }
 
 async fn run_cmd(cmd: &impl crate::cmd::Command, ctx: &mut context::Context<'_>) -> Result<i32> {

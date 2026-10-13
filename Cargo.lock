@@ -2801,8 +2801,7 @@ dependencies = [
 [[package]]
 name = "kcl-api"
 version = "0.2.192"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f686362cc0bfa733c00a3ba587a922a1e4e2e86c70c88fc862b4be293ecd592e"
+source = "git+https://github.com/rockboynton/modeling-app?rev=fe588c793c069d14aedd31f0b7690b4f03cd9ac1#fe588c793c069d14aedd31f0b7690b4f03cd9ac1"
 dependencies = [
  "euler",
  "indexmap 2.14.0",
@@ -2816,14 +2815,14 @@ dependencies = [
  "serde",
  "serde_json",
  "ts-rs",
+ "typed-path",
  "uuid",
 ]
 
 [[package]]
 name = "kcl-engine-codec"
 version = "0.2.192"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ea8291d45672569f156ddba231b7c51ce4c423ad0c3a8049ac1ceda623929661"
+source = "git+https://github.com/rockboynton/modeling-app?rev=fe588c793c069d14aedd31f0b7690b4f03cd9ac1#fe588c793c069d14aedd31f0b7690b4f03cd9ac1"
 dependencies = [
  "kittycad-modeling-cmds",
  "rmp-serde",
@@ -2833,8 +2832,7 @@ dependencies = [
 [[package]]
 name = "kcl-error"
 version = "0.2.192"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cb3b814c9588b41bee841bf292fa63cd2367384e3ccf056199b464e19be217f5"
+source = "git+https://github.com/rockboynton/modeling-app?rev=fe588c793c069d14aedd31f0b7690b4f03cd9ac1#fe588c793c069d14aedd31f0b7690b4f03cd9ac1"
 dependencies = [
  "miette",
  "schemars 0.8.22",
@@ -2847,8 +2845,7 @@ dependencies = [
 [[package]]
 name = "kcl-lib"
 version = "0.2.192"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ee7c58856f0b4c5a72c66daba80f1a4525fff951954cde2fcad0d5250ac75a1c"
+source = "git+https://github.com/rockboynton/modeling-app?rev=fe588c793c069d14aedd31f0b7690b4f03cd9ac1#fe588c793c069d14aedd31f0b7690b4f03cd9ac1"
 dependencies = [
  "ahash",
  "anyhow",
@@ -2917,8 +2914,7 @@ dependencies = [
 [[package]]
 name = "kcl-syntax"
 version = "0.2.192"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a658451de2bd4a80787320e844d551e555294002af63e59c457d9f5971a7f463"
+source = "git+https://github.com/rockboynton/modeling-app?rev=fe588c793c069d14aedd31f0b7690b4f03cd9ac1#fe588c793c069d14aedd31f0b7690b4f03cd9ac1"
 dependencies = [
  "logos",
 ]

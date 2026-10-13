@@ -130,7 +130,7 @@ incremental = true
 debug = 0
 
 [patch.crates-io]
-# kcl-lib = { git = "https://github.com/KittyCAD/modeling-app", branch = "main" }
-# kcl-api = { git = "https://github.com/KittyCAD/modeling-app", branch = "main" }
-# kcl-error = { git = "https://github.com/KittyCAD/modeling-app", branch = "main" }
-# kcl-test-server = { git = "https://github.com/KittyCAD/modeling-app", branch = "main" }
+# The offline checker uses the shared API from our modeling-app fork.
+kcl-lib = { git = "https://github.com/rockboynton/modeling-app", rev = "fe588c793c069d14aedd31f0b7690b4f03cd9ac1" }
+kcl-api = { git = "https://github.com/rockboynton/modeling-app", rev = "fe588c793c069d14aedd31f0b7690b4f03cd9ac1" }
+kcl-error = { git = "https://github.com/rockboynton/modeling-app", rev = "fe588c793c069d14aedd31f0b7690b4f03cd9ac1" }
