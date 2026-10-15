@@ -16,6 +16,18 @@ zoo --help
 ```
 For all other installs, see the instructions on the [latest release](https://github.com/KittyCAD/cli/releases).
 
+### Nix
+
+From a checkout of this repository:
+
+```sh
+nix build .#zoo
+nix run .#zoo -- --help
+```
+
+The flake exports `packages.<system>.zoo` for use in NixOS or Home Manager
+configurations. `nix develop` provides the development environment.
+
 ### Updating the API spec
 
 Updating the API spec is as simple as updating the [`spec.json`](spec.json) file. The macro will take it from there when
