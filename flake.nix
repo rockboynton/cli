@@ -79,8 +79,15 @@
         cargoHash = "sha256-4HSUAIH+CXsOXaOrnXpu9CJ26MbAc3dfl4W5mL0SOiU=";
 
         doCheck = false;
-        nativeBuildInputs = [pkgs.pkg-config];
+        cargoBuildFlags = ["--bin" "zoo"];
+        nativeBuildInputs = [pkgs.pkg-config pkgs.cmake pkgs.perl];
         buildInputs = [pkgs.openssl];
+        meta = {
+          description = "Command-line interface for Zoo";
+          homepage = "https://github.com/KittyCAD/cli";
+          license = pkgs.lib.licenses.mit;
+          mainProgram = "zoo";
+        };
       };
       default = self.packages.${system}.zoo;
     });
